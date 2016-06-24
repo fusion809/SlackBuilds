@@ -74,7 +74,7 @@ sed -i -e "/-ui/d" \
        -e "/-syntax/d" \
        -e "/exception-reporting/d" \
        -e "/metrics/d" \
-       -e "s/\"language-gfm\": \".\",/\"language-gfm2\": \"0.90.4\",\n    \"language-liquid\": \"0.5.1\",\n    \"language-ini-desktop\": \"1.18.2\",\n    \"language-patch2\": \"0.1.3\",\n    \"dark-bint-syntax\": \"0.8.9\",\n    \"fusion-ui\": \"0.10.8\",/g" \
+       -e "s/\"language-gfm\": \".*\",/\"language-gfm2\": \"0.90.4\",\n    \"language-liquid\": \"0.5.1\",\n    \"language-ini-desktop\": \"1.18.2\",\n    \"language-patch2\": \"0.1.3\",\n    \"dark-bint-syntax\": \"0.8.9\",\n    \"fusion-ui\": \"0.10.8\",/g" \
        -e "s/\"language-shellscript\": \".*\",/\"language-unix-shell\": \"0.33.0\",/g" \
        -e "/\"dependencies\": {/a \
             \"language-patch2\": \"fusion809/language-patch2\"," package.json
