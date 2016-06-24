@@ -1,0 +1,121 @@
+#!/bin/sh
+#
+# Slackware build script for atom
+#
+# Copyright 2013-2014 Dhaby Xiloj <slack.dhabyx@gmail.com>
+# Copyright 2015-2016 Corrado Franco (http://conraid.net)
+# All rights reserved.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version, with the following exception:
+# the text of the GPL license may be omitted.
+
+# This program is distributed in the hope that it will be useful, but
+# without any warranty; without even the implied warranty of
+# merchantability or fitness for a particular purpose. Compiling,
+# interpreting, executing or merely reading the text of the program
+# may result in lapses of consciousness and/or very being, up to and
+# including the end of all existence and the Universe as we know it.
+# See the GNU General Public License for more details.
+
+# You may have received a copy of the GNU General Public License along
+# with this program (most likely, a file named COPYING).  If not, see
+# <http://www.gnu.org/licenses/>.
+#
+# Latest version of this SlackBuild at https://github.com/conraid/SlackBuilds
+
+set -eu
+
+CWD=$(pwd)
+
+PKGNAM=atom
+VERSION=1.8.0
+BUILD=${BUILD:-1}
+TAG=${TAG:-cf}
+TMP=${TMP:-/tmp/pkg}
+PKG=$TMP/package-$PKGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
+# Clean cache data
+DELETE_CACHE=${DELETE_CACHE:-yes}
+
+if [ -z ${ARCH:=""} ]; then
+  case "$( uname -m )" in
+    i?86) ARCH=i686 ;;
+    arm*) ARCH=arm ;;
+       *) ARCH=$( uname -m ) ;;
+  esac
+fi
+
+rm -rf $PKG
+mkdir -p $TMP $PKG
+cd $TMP
+rm -rf $PKGNAM-$VERSION
+tar xvf $CWD/$PKGNAM-$VERSION.tar.gz || tar xvf $CWD/v$VERSION.tar.gz
+cd $PKGNAM-$VERSION
+
+chown -R root:root .
+chmod -R u+w,go+r-w,a+X-s .
+
+# Disable send metrics to Google Analytics module
+sed -e '/"metrics":/d' -e '/"exception-reporting":/d' -i package.json
+
+# Apply patches
+if [ -e $CWD/patches ]; then
+  for PATCH in $CWD/patches/*.patch; do
+    patch -p1 -i $PATCH
+  done
+fi
+
+sed -i -e "/-ui/d" \
+       -e "/-theme/d" \
+       -e "/-syntax/d" \
+       -e "/exception-reporting/d" \
+       -e "/metrics/d" \
+       -e "s/\"language-gfm\": \".\",/\"language-gfm2\": \"0.90.4\",\n    \"language-liquid\": \"0.5.1\",\n    \"language-ini-desktop\": \"1.18.2\",\n    \"language-patch2\": \"0.1.3\",\n    \"dark-bint-syntax\": \"0.8.9\",\n    \"fusion-ui\": \"0.10.8\",/g" \
+       -e "s/\"language-shellscript\": \".*\",/\"language-unix-shell\": \"0.33.0\",/g" \
+       -e "/\"dependencies\": {/a \
+            \"language-patch2\": \"fusion809/language-patch2\"," package.json
+
+mkdir -p destbuild
+BUILD_DIR=$PWD/destbuild
+
+sudo ./script/build --build-dir ${BUILD_DIR}
+sudo ./script/grunt --build-dir ${BUILD_DIR} --install-dir $PKG/usr install
+
+find $PKG | xargs file | grep -e "executable" -e "shared object" | grep ELF | cut -f 1 -d : | xargs -r strip --strip-unneeded 2> /dev/null || true
+find $PKG | xargs file | grep "current ar archive" | cut -f 1 -d : | xargs -r strip -g 2> /dev/null || true
+
+# move apm symlink to atom-apm for prevent conflicts with apmd package.
+mv $PKG/usr/bin/apm $PKG/usr/bin/atom-apm
+
+mkdir -p $PKG/usr/doc/$PKGNAM-$VERSION
+cp -a *.md docs $PKG/usr/doc/$PKGNAM-$VERSION
+cat $CWD/$PKGNAM.SlackBuild > $PKG/usr/doc/$PKGNAM-$VERSION/$PKGNAM.SlackBuild
+
+install -Dm644 resources/$PKGNAM.png $PKG/usr/share/pixmaps/$PKGNAM.png || \
+install -Dm644 resources/app-icons/stable/png/1024.png $PKG/usr/share/pixmaps/$PKGNAM.png
+
+mkdir -p $PKG/usr/share/applications
+sed -e 's/<%= appName %>/Atom/' \
+  -e 's/<%= description %>/Hackable text editor/' \
+  -e 's|^\(Exec=\).*|\1/usr/bin/atom %U|' \
+  -e 's/<%= iconName %>/atom/' \
+  -e 's/<%= iconPath %>/atom/' \
+  resources/linux/atom.desktop.in > $PKG/usr/share/applications/atom.desktop
+
+mkdir -p $PKG/install
+cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
+
+if [ "$DELETE_CACHE" = "yes" ]; then
+  # delete temporal data
+  rm -rf $HOME/.atom/
+  rm -rf /tmp/npm-*/
+  rm -rf $TMP/npm-*/
+fi
+
+cd $PKG
+/sbin/makepkg -l y -c n $OUTPUT/$PKGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
