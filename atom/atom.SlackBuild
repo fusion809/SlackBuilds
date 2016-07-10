@@ -69,13 +69,23 @@ fi
 sed -i -e 's@node script/bootstrap@node script/bootstrap --no-quiet@g' \
 ./script/build || die "Fail fixing verbosity of script/build"
 
+_dark_bint_syntax_ver=0.8.9
+_file_icons_ver=1.7.16
+_fusion_ui_ver=0.11.1
+_language_gfm2_ver=0.92.1
+_language_ini_desktop_ver=1.18.3
+_language_liquid_ver=0.5.1
+_language_patch2_ver=0.2.0
+_language_unix_shell_ver=0.37.0
+_terminal_fusion_ver=2.2.3
+
 sed -i -e "/-ui/d" \
        -e "/-theme/d" \
        -e "/-syntax/d" \
        -e "/exception-reporting/d" \
        -e "/metrics/d" \
-       -e "s/\"language-gfm\": \".*\",/\"language-gfm2\": \"0.92.1\",\n    \"language-liquid\": \"0.5.1\",\n    \"language-ini-desktop\": \"1.18.3\",\n    \"language-patch2\": \"0.2.0\",\n    \"dark-bint-syntax\": \"0.8.9\",\n    \"fusion-ui\": \"0.11.1\",/g" \
-       -e "s/\"language-shellscript\": \".*\",/\"language-unix-shell\": \"0.37.0\",\n    \"terminal-fusion\": \"2.2.3\",/g" \
+       -e "s/\"language-gfm\": \".*\",/\"language-gfm2\": \"${_language_gfm2_ver}\",\n    \"language-liquid\": \"${_language_liquid_ver}\",\n    \"language-ini-desktop\": \"${_language_ini_desktop_ver}\",\n    \"language-patch2\": \"${_language_patch2_ver}\",\n    \"dark-bint-syntax\": \"${_dark_bint_syntax_ver}\",\n    \"fusion-ui\": \"${_fusion_ui_ver}\",/g" \
+       -e "s/\"language-shellscript\": \".*\",/\"language-unix-shell\": \"${_language_unix_shell_ver}\",\n    \"terminal-fusion\": \"${_terminal_fusion_ver}\",\n    \"file-icons\": \"${_file_icons_ver}\",/g" \
        -e "/\"dependencies\": {/a \
             \"language-patch2\": \"fusion809/language-patch2\"," package.json
 
