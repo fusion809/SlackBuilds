@@ -1,0 +1,11 @@
+PRGNAM="visual-studio-code"
+VERSION="1.3.0"
+HOMEPAGE="https://code.visualstudio.com/"
+DOWNLOAD="https://az764295.vo.msecnd.net/public/1.3.0/VSCode-linux-ia32-stable.zip"
+MD5SUM="ca396c85b1ca1640bc740a9ab263d239"
+DOWNLOAD_x86_64="https://az764295.vo.msecnd.net/public/1.3.0/VSCode-linux-x64-stable.zip"
+MD5SUM_x86_64="6d5f1c4dd1cf28545daebe3bb6685cb1"
+REQUIRES=""
+MAINTAINER="Andre Barboza"
+EMAIL="bmg.andre@gmail.com"
+
