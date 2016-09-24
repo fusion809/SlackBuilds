@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=visual-studio-code
-VERSION=${VERSION:-1.4.0}
+VERSION=${VERSION:-1.5.3}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
 
@@ -31,11 +31,11 @@ ARCH=${ARCH:-$(uname -m)}
 case "$ARCH" in
   i?86)
     ARCH=i486
-    SRCNAM=VSCode-linux-ia32-stable.zip
+    SRCNAM=VSCode-linux-ia32-stable.tar.gz
     SRCDIR=VSCode-linux-ia32
     ;;
   x86_64)
-    SRCNAM=VSCode-linux-x64-stable.zip
+    SRCNAM=VSCode-linux-x64-stable.tar.gz
     SRCDIR=VSCode-linux-x64
     ;;
   *)
@@ -55,7 +55,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $SRCDIR
-unzip $CWD/$SRCNAM
+bsdtar -xf $CWD/$SRCNAM
 cd $SRCDIR
 chown -R root:root .
 find -L . \
