@@ -31,11 +31,11 @@ ARCH=${ARCH:-$(uname -m)}
 case "$ARCH" in
   i?86)
     ARCH=i486
-    SRCNAM=VSCode-linux-ia32-stable.tar.gz
+    SRCNAM=code-stable-code_1.7.1-1478180561_$ARCH.tar.gz
     SRCDIR=VSCode-linux-ia32
     ;;
   x86_64)
-    SRCNAM=VSCode-linux-x64-stable.tar.gz
+    SRCNAM=code-stable-code_1.7.1-1478180561_amd64.tar.gz
     SRCDIR=VSCode-linux-x64
     ;;
   *)

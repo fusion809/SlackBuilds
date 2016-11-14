@@ -83,7 +83,7 @@ echo '* The installation process will download a lot of modules for atom. *'
 echo '*********************************************************************'
 
 PYTHON=python2 \
- ./script/build
+ sudo ./script/build
 
 # Manual installation since --install-dir option is deleted
 # Installation based on spec file from official RPM package from atom

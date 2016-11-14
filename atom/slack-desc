@@ -6,10 +6,11 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
     |-----handy-ruler------------------------------------------------------|
-atom: Atom (Chrome-based and Hackable text editor)
+atom: Atom (open-source hackable text editor for the 21st Century)
 atom:
-atom: A chrome-based text editor, with full-featured, right out of the
-atom: box: file system browser, multiple panes, snippets, and more.
+atom: An open-source, hackable text editor for the 21st Century, with 
+atom: plenty of features right out of the box, including: file system 
+atom: browser, multiple panes, snippets, and more.
 atom:
 atom:
 atom:
