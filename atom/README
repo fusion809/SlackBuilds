@@ -1,15 +1,20 @@
+Atom is a Chrome-based text editor, hackable and full-featured.
 
-Slackware Current Repository by Conraid
+Atom comes loaded with the features you've come to expect from
+a modern text editor, like a file system browser, fuzzy finder for
+quickly opening files, fast project-wide search and replace,
+snippets, code folding and more.
 
-======================================================================
+To build Atom is necessary to download about 500MB of data,
+which are temporarily stored in ~/.atom, which can be
+deleted after building.
 
-atom (text editor)
+If you use apmd package you need rename apm tool.
 
-A chrome-based text editor, with full-featured, right out of the 
-box: file system browser, multiple panes, snippets, and more.
-
-HOME: https://github.com/atom/atom
-
-======================================================================
-REQUIRES: node npm grunt-cli
-
+Optional building features:
+* Disable compiling metrics module for Google Analytics
+  for poeple who love your privacy
+  https://github.com/atom/metrics
+    DISABLE_METRICS=yes|no (default: no)
+* Delete temporary data cached after building package
+    DELETE_CACHE=yes|no (default: no)
